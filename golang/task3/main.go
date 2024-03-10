@@ -7,7 +7,6 @@ import (
 	"slices"
 	"strconv"
 	"strings"
-	"unicode/utf8"
 )
 
 const input string = "1 2 3 4 5"
@@ -15,24 +14,26 @@ const input string = "1 2 3 4 5"
 // expected --> "5 1"
 
 func main() {
-	var x []int
+	inputSlice := strings.Split(input, " ")
 
-	if utf8.RuneCountInString(input) == 0 {
-		var err error = errors.New("empty string")
+	if len(inputSlice) == 0 {
+		var err error = errors.New("empty array")
 		log.Fatal(err.Error())
 	}
 
-	for _, v := range strings.Split(input, " ") {
+	intSlice := make([]int, 0, len(inputSlice))
+
+	for _, v := range inputSlice {
 		num, err := strconv.Atoi(v)
 
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal(err.Error())
 		}
 
-		x = append(x, num)
+		intSlice = append(intSlice, num)
 	}
 
-	var result string = fmt.Sprint(slices.Max(x), slices.Min(x))
+	max, min := slices.Max(intSlice), slices.Min(intSlice)
 
-	fmt.Println(result)
+	fmt.Printf("%d %d\n", max, min)
 }
